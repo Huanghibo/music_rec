@@ -1,3 +1,4 @@
+0.	Run main.sh
 1.	Open mysql from command line : 	$mysql -u root -p
 2.	Create a database				mysql> CREATE DATABASE nameofdb
 3.	Open main.py					$python main.py
