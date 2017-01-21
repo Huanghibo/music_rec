@@ -25,7 +25,7 @@ def micrec(length):					#to recognize audio via microphone of 'length' seconds. 
 	song=djv.recognize(MicrophoneRecognizer,seconds=length)
 	songname=song['song_name']
 	if(song['confidence']>10):		#confidence is determined by recognize function. Better the match, more is the confidences
-		return songname['song_name']
+		return songname
 	else:
 		return "No match found!!  XD "	
 
@@ -36,16 +36,15 @@ def filerec(fname):					#to recognize audio file of. fname is the directory and 
 	else:
 		return "No match found!!  XD "	
 
-
 def getAddress(address):			#fingerprints all mp3 files in 'address' directory
 	print "\n\nFingerprinting files from directory : " + address
 	djv.fingerprint_directory(address,['mp3'])
 
 
 
-
 class secondary(QMainWindow):
 	#First UI window to appear. Collects name of database and MYSQL password for further processing	
+	
 	def __init__(self):
 		super(secondary,self).__init__()
 		self.initUI()
@@ -95,17 +94,17 @@ class secondary(QMainWindow):
 			self.close()
 			
 			
-
-
+			
 class main(QMainWindow):
-	#second UI window to appear but the main one. Provides buttons to add files to database, take file input for recognition, take mic input for recognition	
+	#second UI window to appear(but the main one). Provides buttons to add files to database, take file input for recognition, take mic input for recognition	
+	
 	def __init__(self):
 		super(main,self).__init__()
 		self.initUI()
 		
 	def initUI(self):
 	
-		lbl1=QLabel('Enter length of mic<br> sample in seconds :',self)
+		lbl1=QLabel('Length of mic<br> sample in seconds :',self)
 		lbl1.move(130,205)
 		lbl1.resize(200,50)
 				
@@ -144,8 +143,15 @@ class main(QMainWindow):
 			self.address()
 			self.statusBar().showMessage('Files added')
 		
+		elif(sender.text()=='Add files to database'):
+			self.statusBar().showMessage('Adding files. This may take a while.')
+			fname=QFileDialog.getOpenFileNames(self,'Select files','/home')[0][0]
+			#for item in fname:
+				
+			print fname	
+		
 		elif(sender.text()=='File Input'):
-			fname = QFileDialog.getOpenFileName(self, 'Open file', '/home')[0]
+			fname=QFileDialog.getOpenFileName(self, 'Open file', '/home')[0]
 			self.statusBar().showMessage('Searching')
 			message=filerec(fname)
 			message=QMessageBox.question(self,' ',message,QMessageBox.Ok)
@@ -158,29 +164,29 @@ class main(QMainWindow):
 			message=QMessageBox.question(self,' ',message,QMessageBox.Ok)
 			self.statusBar().showMessage('Finished')	
 	
-	
 	def address(self):
 		getAddress(str(QFileDialog.getExistingDirectory(self,"Select Directory")))
 
 		
-if __name__=='__main__':
 
-	db=QApplication(sys.argv)	#PyQt5 window 1. Database configuration window
-	ex=secondary()				
-	db.exec_()	
 
-	dbname,dbpassword=readDBfromfile()
 
-	config = {
-	"database": {
-	"host": "127.0.0.1",
-	"user": "root",
-	"passwd":dbpassword, 
-	"db":dbname,
-		}
+db=QApplication(sys.argv)	#PyQt5 window 1. Database configuration window
+ex=secondary()				
+db.exec_()	
+
+dbname,dbpassword=readDBfromfile()
+
+config = {
+"database": {
+"host": "127.0.0.1",
+"user": "root",
+"passwd":dbpassword, 
+"db":dbname,
 	}
-	djv=Dejavu(config)
+}
+djv=Dejavu(config)
 	
-	app=QApplication(sys.argv)	#PyQt5 window 2. Main window
-	ex=main()
-	sys.exit(app.exec_())
+app=QApplication(sys.argv)	#PyQt5 window 2. Main window
+ex=main()
+sys.exit(app.exec_())
