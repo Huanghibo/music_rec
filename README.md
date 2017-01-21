@@ -12,18 +12,18 @@ Installation
 ============
 
 1.	Run main.sh to install the required libraries.
-##List of dependencies PyAudio, pydub, ffmpeg, matplotlib, scipy, numpy, mysql-client, virtualenv, pydejavu
+#List of dependencies PyAudio, pydub, ffmpeg, matplotlib, scipy, numpy, mysql-client, virtualenv, pydejavu
 
 2.	Open mysql from command line : 	$mysql -u root -p
 
 3.	Create a database			 :	mysql> CREATE DATABASE nameofdb;
-##This database will be used for storing fingerprinting data
+#This database will be used for storing fingerprinting data
 
 Execute main.py to access the program. 
 "Add folder to database"		 :	All .mp3 files in the folder will be fingerprinted and added
 "File Input"					 :	Select a file to recognize
 "Mic Input"						 :	Microphone is switched on instantly for specified number of seconds to listen to audio. 
-##Recognition may take a while
+#Recognition may take a while
 
 dbconfig file is created after the first run. It stores the last used mysql config data to autofill in UI.
 
